@@ -22,5 +22,5 @@ obj/
 *.userosscache
 
 # Project-specific files
-project-ploomes-api/bin/
-project-ploomes-api/obj/
+lead-management-api/bin/
+lead-management-api/obj/
