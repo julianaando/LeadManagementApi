@@ -1,6 +1,6 @@
-using lead_management_api.Models.Enums;
+using LeadManagementApi.Models.Enums;
 
-namespace lead_management_api.Core;
+namespace LeadManagementApi.Models;
 
 public class LeadRequest
 {
@@ -9,7 +9,7 @@ public class LeadRequest
     public string? PrimaryContactEmail { get; set; }
     public string? PrimaryContactPhone { get; set; }
 
-    public Lead CreateLead(int id)
+    public Lead CreateLead(int id, LeadStage currentStage)
     {
         return new Lead
         {
@@ -18,8 +18,9 @@ public class LeadRequest
             PrimaryContactName = PrimaryContactName,
             PrimaryContactEmail = PrimaryContactEmail,
             PrimaryContactPhone = PrimaryContactPhone,
-            // LeadStage = LeadStage.CREATED,
+            LeadStage = currentStage,
             CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
         };
     }
 
@@ -29,6 +30,7 @@ public class LeadRequest
         lead.PrimaryContactName = PrimaryContactName;
         lead.PrimaryContactEmail = PrimaryContactEmail;
         lead.PrimaryContactPhone = PrimaryContactPhone;
+        lead.LeadStage = lead.LeadStage;
         lead.UpdatedAt = DateTime.Now;
         return lead;
     }

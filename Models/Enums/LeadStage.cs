@@ -1,11 +1,16 @@
-namespace lead_management_api.Models.Enums;
+using System.ComponentModel;
+using System.Text.Json.Serialization;
 
+namespace LeadManagementApi.Models.Enums;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum LeadStage
 {
+  INITIAL,
   CREATED,
   PROSPECTING,
   QUALIFICATION,
   PROPOSAL,
   NEGOTIATION,
-  CLOSING
+  CLOSED
 }
