@@ -17,9 +17,14 @@ public class LeadService : ILeadService
       _leadsList = new List<Lead>();
     }
 
-    public LeadResponse CreateLead(LeadRequest request)
+    public Lead CreateLead(LeadRequest request)
     {
-      
+      if (request == null) throw new ArgumentNullException(nameof(request));
+
+      var lead = request.CreateLead(_nextId++, LeadStage.CREATED);
+      _leadsList.Add(lead);
+
+      return lead;
     }
 
     public List<Lead> GetAllLeads()
