@@ -9,16 +9,15 @@ public class LeadRequest
     public string? PrimaryContactEmail { get; set; }
     public string? PrimaryContactPhone { get; set; }
 
-    public Lead CreateLead(int id, LeadStage currentStage)
+    public Lead CreateLead()
     {
         return new Lead
         {
-            Id = id,
             CompanyName = CompanyName,
             PrimaryContactName = PrimaryContactName,
             PrimaryContactEmail = PrimaryContactEmail,
             PrimaryContactPhone = PrimaryContactPhone,
-            LeadStage = currentStage,
+            LeadStage = LeadStage.CREATED,
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now
         };

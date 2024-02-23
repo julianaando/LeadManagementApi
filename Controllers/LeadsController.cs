@@ -6,7 +6,7 @@ using LeadManagementApi.Models.Enums;
 namespace LeadManagementApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("leads")]
 public class LeadsController : ControllerBase
 {
     // declara a dependência do serviço de leads para ser injetada
@@ -19,11 +19,11 @@ public class LeadsController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Lead>> GetAllLeads()
+    public async Task<ActionResult<List<Lead>>> GetAllLeads()
     {
         try
         {
-            List<Lead> leads = _leadService.GetAllLeads();
+            List<Lead> leads = await _leadService.GetAllLeadsAsync();
             return Ok(leads);
         }
         catch (Exception ex)
@@ -33,12 +33,12 @@ public class LeadsController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult CreateLead(LeadRequest request)
+    public async Task<ActionResult<Lead>> CreateLead(LeadRequest request)
     {
         try
         {
-            Lead lead = _leadService.CreateLead(request);
-            return StatusCode(201, lead);
+            Lead lead = await _leadService.CreateLeadAsync(request);
+            return Ok(lead);
         }
         catch (Exception ex)
         {
@@ -47,11 +47,11 @@ public class LeadsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public ActionResult UpdateLead(int id, [FromBody] LeadRequest request)
+    public async Task<ActionResult<Lead>> UpdateLead(int id, LeadRequest request)
     {
         try
         {
-            Lead lead = _leadService.UpdateLead(id, request);
+            Lead lead = await _leadService.UpdateLeadAsync(id, request);
             return Ok(lead);
         }
         catch (Exception ex)
@@ -61,16 +61,29 @@ public class LeadsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public ActionResult DeleteLead(int id)
+    public async Task<ActionResult> DeleteLead(int id)
     {
         try
         {
-            _leadService.DeleteLead(id);
-            return NoContent();
+            await _leadService.DeleteLeadAsync(id);
+            return Ok();
         }
         catch (Exception ex)
         {
             return BadRequest(new { message = ex.Message.ToString() });
+        }
+    }
+
+    [HttpGet("/test-database-connection")]
+    public async Task TestDatabaseConnection()
+    {
+        try
+        {
+            await _leadService.TestDatabaseConnection();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao testar a conexão com o banco de dados: {ex.Message}");
         }
     }
 }
