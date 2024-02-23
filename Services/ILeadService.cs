@@ -4,9 +4,10 @@ using LeadManagementApi.Models.Enums;
 
 public interface ILeadService
 {
-    Task<Lead> CreateLeadAsync(LeadRequest request);
-    Task<List<Lead>> GetAllLeadsAsync();
-    Task<Lead> UpdateLeadAsync(int id, LeadRequest request);
+    Task<LeadResponseDTO> CreateLeadAsync(CreateLeadDTO request);
+    Task<List<LeadResponseDTO>> GetAllLeadsAsync();
+    Task<LeadResponseDTO> UpdateLeadAsync(int id, UpdateLeadDTO request);
     Task DeleteLeadAsync(int id);
     Task TestDatabaseConnection();
+    Task<LeadResponseDTO> GetLeadByIdAsync(int id);
 }

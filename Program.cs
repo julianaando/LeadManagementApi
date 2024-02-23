@@ -2,11 +2,15 @@ using LeadManagementApi.Models;
 using LeadManagementApi.Services;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using LeadManagementApi.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ILeadService, LeadService>();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options => 
+{
+    options.SerializerSettings.Converters.Add(new DateTimeConverter());
+});
 builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddLogging(loggingBuilder =>

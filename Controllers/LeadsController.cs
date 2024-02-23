@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using LeadManagementApi.Models;
 using LeadManagementApi.Services;
 using LeadManagementApi.Models.Enums;
+using LeadManagementApi.Mappers;
 
 namespace LeadManagementApi.Controllers;
 
@@ -13,12 +14,12 @@ public class LeadsController(ILeadService leadService) : ControllerBase
     protected ILeadService _leadService = leadService;
 
     [HttpGet]
-    public async Task<ActionResult<List<Lead>>> GetAllLeads()
+    public async Task<ActionResult<List<LeadResponseDTO>>> GetAllLeads()
     {
         try
         {
-            List<Lead> leads = await _leadService.GetAllLeadsAsync();
-            return Ok(leads);
+            List<LeadResponseDTO> leads = await _leadService.GetAllLeadsAsync();
+            return leads;
         }
         catch (Exception ex)
         {
@@ -27,12 +28,12 @@ public class LeadsController(ILeadService leadService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Lead>> CreateLead(LeadRequest request)
+    public async Task<ActionResult<LeadResponseDTO>> CreateLead(CreateLeadDTO request)
     {
         try
         {
-            Lead lead = await _leadService.CreateLeadAsync(request);
-            return CreatedAtAction(nameof(GetAllLeads), new { id = lead.Id }, lead);
+            LeadResponseDTO lead = await _leadService.CreateLeadAsync(request);
+            return CreatedAtAction(nameof(GetLeadById), new { id = lead.Id }, lead);
         }
         catch (Exception ex)
         {
@@ -40,13 +41,31 @@ public class LeadsController(ILeadService leadService) : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Lead>> UpdateLead(int id, LeadRequest request)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<LeadResponseDTO>> GetLeadById(int id)
     {
         try
         {
-            Lead lead = await _leadService.UpdateLeadAsync(id, request);
-            return Ok(lead);
+            LeadResponseDTO lead = await _leadService.GetLeadByIdAsync(id);
+            return lead;
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<LeadResponseDTO>> UpdateLead(int id, UpdateLeadDTO request)
+    {
+        try
+        {
+            LeadResponseDTO lead = await _leadService.UpdateLeadAsync(id, request);
+            return lead;
         }
         catch (ArgumentException ex)
         {
