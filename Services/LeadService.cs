@@ -2,7 +2,6 @@ namespace LeadManagementApi.Services;
 
 using System.Collections.Generic;
 using LeadManagementApi.Models;
-using LeadManagementApi.Models.Enums;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +13,6 @@ public class LeadService : ILeadService
     {
         _context = context;
     }
-
 
     public async Task<Lead> CreateLeadAsync(LeadRequest request)
     {
@@ -47,23 +45,67 @@ public class LeadService : ILeadService
 
     public async Task<List<Lead>> GetAllLeadsAsync()
     {
-        return await _context.Leads.ToListAsync();
+        try
+        {
+            return await _context.Leads.ToListAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            Console.WriteLine($"DbUpdateException: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while retrieving leads: {ex.Message}");
+            throw;
+        }
     }
 
 
     public async Task<Lead> UpdateLeadAsync(int id, LeadRequest request)
     {
-        var lead = await _context.Leads.FindAsync(id) ?? throw new ArgumentException($"Lead with id {id} not found");
-        var updatedLead = request.UpdateLead(lead);
-        await _context.SaveChangesAsync();
-        return updatedLead;
+        try
+        {
+            var lead = await _context.Leads.FindAsync(id) ?? throw new ArgumentException($"Lead with id {id} not found");
+            var updatedLead = request.UpdateLead(lead);
+            await _context.SaveChangesAsync();
+            return updatedLead;
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            Console.WriteLine($"DbUpdateConcurrencyException: {ex.Message}");
+            throw;
+        }
+        catch (DbUpdateException ex)
+        {
+            Console.WriteLine($"DbUpdateException: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while updating lead: {ex.Message}");
+            throw;
+        }
     }
 
     public async Task DeleteLeadAsync(int id)
     {
-        var lead = await _context.Leads.FindAsync(id) ?? throw new ArgumentException($"Lead with id {id} not found");
-        _context.Leads.Remove(lead);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var lead = await _context.Leads.FindAsync(id) ?? throw new ArgumentException($"Lead with id {id} not found");
+            _context.Leads.Remove(lead);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            Console.WriteLine($"DbUpdateException: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while deleting lead: {ex.Message}");
+            throw;
+        }
     }
 
     public async Task TestDatabaseConnection()

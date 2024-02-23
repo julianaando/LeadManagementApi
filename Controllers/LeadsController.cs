@@ -7,16 +7,10 @@ namespace LeadManagementApi.Controllers;
 
 [ApiController]
 [Route("leads")]
-public class LeadsController : ControllerBase
+public class LeadsController(ILeadService leadService) : ControllerBase
 {
     // declara a dependência do serviço de leads para ser injetada
-    protected ILeadService _leadService;
-
-    // injeta a dependência do serviço de leads no construtor
-    public LeadsController(ILeadService leadService)
-    {
-        _leadService = leadService;
-    }
+    protected ILeadService _leadService = leadService;
 
     [HttpGet]
     public async Task<ActionResult<List<Lead>>> GetAllLeads()
@@ -38,7 +32,7 @@ public class LeadsController : ControllerBase
         try
         {
             Lead lead = await _leadService.CreateLeadAsync(request);
-            return Ok(lead);
+            return CreatedAtAction(nameof(GetAllLeads), new { id = lead.Id }, lead);
         }
         catch (Exception ex)
         {
@@ -54,9 +48,13 @@ public class LeadsController : ControllerBase
             Lead lead = await _leadService.UpdateLeadAsync(id, request);
             return Ok(lead);
         }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message.ToString() });
+            return BadRequest(new { message = ex.Message });
         }
     }
 
@@ -66,24 +64,30 @@ public class LeadsController : ControllerBase
         try
         {
             await _leadService.DeleteLeadAsync(id);
-            return Ok();
+            return NoContent();
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { message = ex.Message });
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message.ToString() });
+            return BadRequest(new { message = ex.Message });
         }
     }
 
     [HttpGet("/test-database-connection")]
-    public async Task TestDatabaseConnection()
+    public async Task<OkObjectResult> TestDatabaseConnection()
     {
         try
         {
             await _leadService.TestDatabaseConnection();
+            return Ok(new { message = "Database connection test successful." });
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao testar a conexão com o banco de dados: {ex.Message}");
+            Console.WriteLine($"Error testing database connection: {ex.Message}");
+            return (OkObjectResult)StatusCode(500, new { message = "Internal server error" });
         }
     }
 }
