@@ -5,10 +5,10 @@ services:
     container_name: sql-server
     image: mcr.microsoft.com/mssql/server
     environment:
-      SA_PASSWORD: "${DB_PASSWORD}"
+      SA_PASSWORD: "leadDB2024"
       ACCEPT_EULA: "Y"
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-Usa", "-P${DB_PASSWORD}", "-Q", "select 1", "-d", "LeadManagementDB"]
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-Usa", "-PleadDB2024", "-Q", "select 1", "-d", "LeadManagementDB"]
       interval: 15s
       retries: 20
     ports:
@@ -25,7 +25,7 @@ services:
       sql-server:
         condition: service_healthy
     environment:
-      - 'ConnectionStrings__DefaultConnection=Server=tcp:leadmanagementapi.database.windows.net,1433;Initial Catalog=LeadManagementDB;Persist Security Info=False;User ID=Juliana;Password=${DB_PASSWORD};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      - 'ConnectionStrings__DefaultConnection=Server=tcp:leadmanagementapi.database.windows.net,1433;Initial Catalog=LeadManagementDB;Persist Security Info=False;User ID=Juliana;Password=leadDB2024@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
     ports:
       - "8080:8080"
 

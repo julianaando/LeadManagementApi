@@ -21,7 +21,6 @@ out/
 *.user
 *.suo
 *.userosscache
-*.env
 
 # Project-specific files
 lead-management-api/bin/
