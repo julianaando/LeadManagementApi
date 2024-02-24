@@ -15,6 +15,7 @@ obj/
 appsettings.Development.json
 bin/
 obj/
+out/
 
 # User-specific files
 *.user

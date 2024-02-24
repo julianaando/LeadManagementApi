@@ -11,7 +11,12 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.Converters.Add(new DateTimeConverter());
 });
-builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<Context>(options => 
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddLogging(loggingBuilder =>
 {
@@ -33,19 +38,23 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+await using var scope = app.Services.CreateAsyncScope();
+using var db = scope.ServiceProvider.GetService<Context>();
+if (db != null)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options => 
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-        options.RoutePrefix = string.Empty;
-    }
-
-    );
+    await db.Database.MigrateAsync();
 }
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI(options => 
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    options.RoutePrefix = string.Empty;
+}
+
+);
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
