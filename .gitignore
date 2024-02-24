@@ -25,3 +25,5 @@ out/
 # Project-specific files
 lead-management-api/bin/
 lead-management-api/obj/
+
+.env
