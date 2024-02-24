@@ -13,6 +13,7 @@ public class Context(IConfiguration configuration) : DbContext
     {
          try
         {
+            Console.WriteLine($"Configurando o DbContext {_configuration.GetConnectionString("DefaultConnection")}");
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
         }
         catch (Exception ex)
