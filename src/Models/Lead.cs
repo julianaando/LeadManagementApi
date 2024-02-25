@@ -22,7 +22,6 @@ public class Lead
   [Column(TypeName = "nvarchar(100)")]
   public string? PrimaryContactEmail { get; set; }
 
-  [Required]
   [Column(TypeName = "nvarchar(20)")]
   public string? PrimaryContactPhone { get; set; }
 
