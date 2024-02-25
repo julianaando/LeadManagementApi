@@ -82,9 +82,11 @@ Você será direcionado à interface do Swagger, onde poderá explorar e testar 
 O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemplo: <code>{ "CompanyName is required" }</code><br>
 
 </details>
+
 <details>
 <summary> Consultas (GET) </summary>
   <br>
+  
 | Método | Funcionalidade | URL |
 |---|---|---|
 | `GET` | Consulta todas as leads cadastradas | `http://localhost:8080/leads`
@@ -108,10 +110,10 @@ O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemp
 ]
 ```
 </details>
-:x:&nbsp;&nbsp;A requisição irá falhar se não houver, pelo menos, uma lead cadastrada.<br>
+:x:&nbsp;&nbsp;A requisição irá falhar se não houver, pelo menos, uma lead cadastrada.
 O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "Lead" }</code>
 <br>
----
+
 | Método | Funcionalidade | URL |
 |---|---|---|
 | `GET` | Realiza a consulta de uma lead pelo seu ID | `http://localhost:8080/leads/{id}`
@@ -174,7 +176,7 @@ O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "Lead" }<
   </details>
 
   :x:&nbsp;&nbsp; A requisição irá falhar se algum dos atributos não for preenchido corretamente ou estiver ausente.<br> 
-  O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemplo: <code>{ "Lead {id} not found" }</code>
+  O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemplo: <code>{ "Lead with id {id} not found" }</code>
   
   > :warning: &nbsp; _O campo `leadStage` deve ser um dos seguintes valores: "INITIAL", "CREATED", "PROSPECTING", "QUALIFICATION", "PROPOSAL", "NEGOTIATION", "CLOSED"._
   <br>
