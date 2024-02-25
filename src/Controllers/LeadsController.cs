@@ -10,7 +10,6 @@ namespace LeadManagementApi.Controllers;
 [Route("leads")]
 public class LeadsController(ILeadService leadService) : ControllerBase
 {
-    // declara a dependência do serviço de leads para ser injetada
     protected ILeadService _leadService = leadService;
 
     [HttpGet]
