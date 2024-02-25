@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 
 namespace LeadManagementApi.Models;
 
-// dados que serão retornados ao usuário após criar um lead
 public class LeadResponseDTO
 {
     public int Id { get; set; }
@@ -12,8 +11,6 @@ public class LeadResponseDTO
     public string? PrimaryContactName { get; set; }
     public string? PrimaryContactEmail { get; set; }
     public string? PrimaryContactPhone { get; set; }
-
-    [JsonConverter(typeof(EnumConverter))]
     public LeadStage LeadStage { get; set; }
 
     [JsonConverter(typeof(DateTimeConverter))]

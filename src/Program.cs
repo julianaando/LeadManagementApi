@@ -3,13 +3,18 @@ using LeadManagementApi.Services;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using LeadManagementApi.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ILeadService, LeadService>();
-builder.Services.AddControllers().AddNewtonsoftJson(options => 
+builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.SerializerSettings.Converters.Add(new DateTimeConverter());
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
 });
 
 builder.Services.AddDbContext<Context>(options => 
@@ -34,6 +39,8 @@ builder.Services.AddSwaggerGen(options =>
         Contact = null,
         License = null,
     });
+
+    options.CustomSchemaIds(type => type.ToString());
 });
 
 var app = builder.Build();
@@ -53,8 +60,6 @@ app.UseSwaggerUI(options =>
 }
 
 );
-
-//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

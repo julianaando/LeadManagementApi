@@ -1,24 +1,27 @@
-namespace LeadManagementApi.Utils;
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-using Newtonsoft.Json;
-
-public class DateTimeConverter : JsonConverter<DateTime>
+namespace LeadManagementApi.Utils
 {
-    public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public class DateTimeConverter : JsonConverter<DateTime>
     {
-        if (reader.Value == null)
+        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
+            if (reader.TokenType == JsonTokenType.String)
+            {
+                if (DateTime.TryParse(reader.GetString(), out DateTime result))
+                {
+                    return result;
+                }
+            }
+
             return DateTime.MinValue;
         }
-        if (DateTime.TryParse(reader.Value.ToString(), out DateTime result))
-        {
-            return result;
-        }
-        return DateTime.MinValue;
-    }
 
-    public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
-    {
-        writer.WriteValue(value.ToString("dd/MM/yyyy HH:mm:ss"));
+        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString("dd/MM/yyyy HH:mm:ss"));
+        }
     }
 }
