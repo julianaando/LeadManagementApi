@@ -66,20 +66,19 @@ Você será direcionado à interface do Swagger, onde poderá explorar e testar 
   
   ```json
   {
-  "Id": 1,
-  "CompanyName": "ABC Corp",
-  "PrimaryContactName": "João Silva",
-  "PrimaryContactEmail": "joao@example.com",
-  "PrimaryContactPhone": "+55 11 1234-5678",
-  "LeadStage": "CREATED",
-  "CreatedAt":  "20-02-2024 18:56:33",
-  "UpdatedAt":  "20-02-2024 18:56:33"
+    "Id": 1,
+    "CompanyName": "ABC Corp",
+    "PrimaryContactName": "João Silva",
+    "PrimaryContactEmail": "joao@example.com",
+    "PrimaryContactPhone": "+55 11 1234-5678",
+    "LeadStage": "CREATED",
+    "CreatedAt":  "20-02-2024 18:56:33",
+    "UpdatedAt":  "20-02-2024 18:56:33"
 }
 ```
 </details>
 
-:x:  A requisição irá falhar se algum dos atributos não for preenchido corretamente ou estiver ausente.<br>
-O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemplo: <code>{ "CompanyName is required" }</code><br>
+:x:  A requisição irá falhar se algum dos atributos não for preenchido corretamente ou estiver ausente. O endpoint retornará um erro <code>400</code><br>
 
 </details>
 
@@ -110,8 +109,6 @@ O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemp
 ]
 ```
 </details>
-:x:&nbsp;&nbsp;A requisição irá falhar se não houver, pelo menos, uma lead cadastrada.
-O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "Lead" }</code>
 <br>
 
 | Método | Funcionalidade | URL |
