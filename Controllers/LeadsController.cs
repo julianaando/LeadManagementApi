@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using LeadManagementApi.Models;
 using LeadManagementApi.Services;
+using LeadManagementApi.Models.Enums;
+using LeadManagementApi.Mappers;
 
 namespace LeadManagementApi.Controllers;
 

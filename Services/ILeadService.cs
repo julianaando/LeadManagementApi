@@ -1,5 +1,6 @@
 namespace LeadManagementApi.Services;
 using LeadManagementApi.Models;
+using LeadManagementApi.Models.Enums;
 
 public interface ILeadService
 {
