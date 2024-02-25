@@ -58,7 +58,6 @@ public class LeadService(Context context) : ILeadService
         }
     }
 
-
     public async Task<LeadResponseDTO> UpdateLeadAsync(int id, UpdateLeadDTO request)
     {
         try
@@ -103,12 +102,6 @@ public class LeadService(Context context) : ILeadService
             Console.WriteLine($"Error while deleting lead: {ex.Message}");
             throw;
         }
-    }
-
-    public async Task TestDatabaseConnection()
-    {
-       var result = await _context.Database.CanConnectAsync();
-       await _context.Database.ExecuteSqlRawAsync("SELECT 1");
     }
 
     public Task<LeadResponseDTO> GetLeadByIdAsync(int id)

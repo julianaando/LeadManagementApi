@@ -94,19 +94,4 @@ public class LeadsController(ILeadService leadService) : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
-
-    [HttpGet("/test-database-connection")]
-    public async Task<OkObjectResult> TestDatabaseConnection()
-    {
-        try
-        {
-            await _leadService.TestDatabaseConnection();
-            return Ok(new { message = "Database connection test successful." });
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error testing database connection: {ex.Message}");
-            return (OkObjectResult)StatusCode(500, new { message = "Internal server error" });
-        }
-    }
 }

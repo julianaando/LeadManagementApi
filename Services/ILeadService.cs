@@ -8,6 +8,5 @@ public interface ILeadService
     Task<List<LeadResponseDTO>> GetAllLeadsAsync();
     Task<LeadResponseDTO> UpdateLeadAsync(int id, UpdateLeadDTO request);
     Task DeleteLeadAsync(int id);
-    Task TestDatabaseConnection();
     Task<LeadResponseDTO> GetLeadByIdAsync(int id);
 }
