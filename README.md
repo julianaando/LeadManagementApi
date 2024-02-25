@@ -24,7 +24,7 @@ A Lead Management API é um projeto desenvolvido como parte do processo seletivo
 
 1. Clone o repositório em uma pasta de sua preferência
 ```
-git clone git@github.com:seu-usuario/LeadManagementApi.git
+git clone git@github.com:julianaando/LeadManagementApi.git
 ```
 
 2. Entre na pasta que você acabou de clonar e execute o Docker Compose para subir o container
@@ -179,7 +179,6 @@ O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "Lead" }<
   > :warning: &nbsp; _O campo `leadStage` deve ser um dos seguintes valores: "INITIAL", "CREATED", "PROSPECTING", "QUALIFICATION", "PROPOSAL", "NEGOTIATION", "CLOSED"._
   <br>
 </details>
-</details>  
 
 <details>
   <summary> Exclusão (DELETE) </summary>
