@@ -19,26 +19,21 @@ A Lead Management API é um projeto desenvolvido como parte do processo seletivo
 - **Linguagem de Programação:** C#
 - **Framework:** ASP.NET Core
 - **Banco de Dados:** Entity Framework Core com SQL Server
-- 
+  
 ## ⚙️ Como Executar
 
 1. Clone o repositório em uma pasta de sua preferência
-   ```
-   git clone git@github.com:seu-usuario/LeadManagementApi.git
-   ```
+```
+git clone git@github.com:seu-usuario/LeadManagementApi.git
+```
 
 2. Entre na pasta que você acabou de clonar e execute o Docker Compose para subir o container
-  ```
-  docker-compose up --build
-  ```
-3. Acesse a aplicação localmente através da URL
-  ```json
-  http://localhost:8080/
-  ```
- ou, através do link Azure
- 
-https://leadmanagementapi-ploomes.azurewebsites.net/index.html
+```
+docker-compose up --build
+```
+#### Acesse a aplicação localmente através da URL http://localhost:8080/
 
+#### Ou através do link Azure https://leadmanagementapi-ploomes.azurewebsites.net/index.html
 Você será direcionado à interface do Swagger, onde poderá explorar e testar os endpoints da API.
 
 ## 📚 Documentação (endpoints)
@@ -114,8 +109,8 @@ O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemp
 ```
 </details>
 :x:&nbsp;&nbsp;A requisição irá falhar se não houver, pelo menos, uma lead cadastrada.<br>
-O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "No leads found" }</code>
-<br><br>
+O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "Lead" }</code>
+<br>
 ---
 | Método | Funcionalidade | URL |
 |---|---|---|
@@ -137,6 +132,7 @@ O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "No leads
   }
 ```
 </details>
+</details>
 
 <details>
   <summary> Atualização (PUT) </summary>
@@ -144,7 +140,7 @@ O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "No leads
 
   | Método | Funcionalidade | URL |
   |---|---|---|
-  | `PUT` | Atualiza as informações de uma lead existente | `http://localhost:5000/api/leads/{id}`
+  | `PUT` | Atualiza as informações de uma lead existente | `http://localhost:8080/leads/{id}`
   
   <details>
     
@@ -178,11 +174,12 @@ O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "No leads
   </details>
 
   :x:&nbsp;&nbsp; A requisição irá falhar se algum dos atributos não for preenchido corretamente ou estiver ausente.<br> 
-  O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemplo: <code>{ "PrimaryContactEmail is required" }</code>
+  O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemplo: <code>{ "Lead {id} not found" }</code>
   
   > :warning: &nbsp; _O campo `leadStage` deve ser um dos seguintes valores: "INITIAL", "CREATED", "PROSPECTING", "QUALIFICATION", "PROPOSAL", "NEGOTIATION", "CLOSED"._
   <br>
 </details>
+</details>  
 
 <details>
   <summary> Exclusão (DELETE) </summary>
@@ -190,21 +187,11 @@ O endpoint retornará um erro <code>400</code> com a mensagem: <code>{ "No leads
   
   | Método | Funcionalidade | URL |
   |---|---|---|
-  | `DELETE` | Remove uma lead existente | `http://localhost:8080leads/{id}`
+  | `DELETE` | Remove uma lead existente | `http://localhost:8080/leads/{id}`
   
   -&nbsp;&nbsp;&nbsp;Para deletar uma lead, especifique o `id` desejado na URL, conforme mostrado acima. Não é necessário incluir um corpo de requisição, pois a ação de exclusão é baseada no `id` fornecido.
-  
- <details>
-    <summary>  Um exemplo de resposta bem-sucedida com <code>status 204</code> é: </summary>
-  
-    No content
-  </details>
 
-  <details>
-    <summary>  Um exemplo de resposta de erro com <code>status 404</code> é: </summary>
-  
-    {
-      "error": "Lead {id} not found"
-    }
-  </details>
+ - Uma exclusão bem sucedida retornará um <code>status 204</code> sem conteúdo <code>No Content</code>
+
+- O endpoint retornará um erro <code>400</code> com uma mensagem referente. Exemplo: <code>{ "Lead {id} not found" }</code>
  </details>
