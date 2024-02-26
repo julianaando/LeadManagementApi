@@ -3,10 +3,11 @@ namespace LeadManagementApi.Services;
 using System.Collections.Generic;
 using LeadManagementApi.Caching;
 using LeadManagementApi.Mappers;
-using LeadManagementApi.Models;
+using LeadManagementApi.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using LeadManagementApi.Models;
 
 public class LeadService(Context context, ICachingService cache) : ILeadService
 {

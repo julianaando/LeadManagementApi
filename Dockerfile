@@ -6,13 +6,13 @@ ARG redis_connection_string
 WORKDIR /app
 
 ENV ConnectionStrings__DefaultConnection=${connection_string}
-
 ENV ConnectionStrings__RedisConnection=${redis_connection_string}
 
-COPY *.csproj ./
+COPY LeadManagementApi/*.csproj ./
+
 RUN dotnet restore
 
-COPY . ./
+COPY LeadManagementApi/ ./
 
 ENV PATH="$PATH:/root/.dotnet/tools"
 
