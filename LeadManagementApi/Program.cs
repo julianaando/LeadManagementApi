@@ -1,4 +1,4 @@
-using LeadManagementApi.Models;
+using LeadManagementApi.Data;
 using LeadManagementApi.Services;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +6,12 @@ using System.Text.Json.Serialization;
 using LeadManagementApi.Caching;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<ILeadService, LeadService>();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Services.AddDbContext<Context>(options => 
 {
@@ -15,7 +21,6 @@ builder.Services.AddDbContext<Context>(options =>
 builder.Services.AddScoped<ILeadService, LeadService>();
 builder.Services.AddScoped<ICachingService, CachingService>();
 
-Console.WriteLine("teste: " + builder.Configuration.GetConnectionString("RedisConnection"));
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
@@ -59,9 +64,7 @@ app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = string.Empty;
-}
-
-);
+});
 
 app.UseAuthorization();
 
