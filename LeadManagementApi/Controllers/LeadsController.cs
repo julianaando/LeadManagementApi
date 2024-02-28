@@ -34,7 +34,7 @@ public class LeadsController(ILeadService leadService) : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message.ToString() });
+            return BadRequest(new { message = ex.Message });
         }
     }
 

@@ -2,13 +2,14 @@ namespace LeadManagementApi.Services;
 
 using System.Collections.Generic;
 using LeadManagementApi.Mappers;
-using LeadManagementApi.Models;
+using LeadManagementApi.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using LeadManagementApi.Models;
 
-public class LeadService(Context context) : ILeadService
+public class LeadService(IContext context) : ILeadService
 {
-    private readonly Context _context = context;
+    private readonly IContext _context = context;
 
     public async Task<LeadResponseDTO> CreateLeadAsync(CreateLeadDTO request)
     {
