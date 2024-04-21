@@ -2,24 +2,29 @@ using LeadManagementApi.Models;
 using LeadManagementApi.Services;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using LeadManagementApi.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json.Serialization;
+using LeadManagementApi.Caching;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddScoped<ILeadService, LeadService>();
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-});
 
 builder.Services.AddDbContext<Context>(options => 
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddScoped<ILeadService, LeadService>();
+builder.Services.AddScoped<ICachingService, CachingService>();
+
+Console.WriteLine("teste: " + builder.Configuration.GetConnectionString("RedisConnection"));
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
+    options.InstanceName = "LeadManagementApiCache";
+});
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -34,10 +39,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Lead Management API",
-        Description = "An ASP.NET Core Web API for my Ploomes debut :)",
-        TermsOfService = null,
-        Contact = null,
-        License = null,
+        Description = "A .NET API for my Ploomes debut :)",
     });
 
     options.CustomSchemaIds(type => type.ToString());

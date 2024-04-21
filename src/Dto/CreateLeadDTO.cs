@@ -1,5 +1,3 @@
-using LeadManagementApi.Models.Enums;
-
 namespace LeadManagementApi.Models;
 
 public class CreateLeadDTO

@@ -1,16 +1,19 @@
 namespace LeadManagementApi.Services;
 
 using System.Collections.Generic;
+using LeadManagementApi.Caching;
 using LeadManagementApi.Mappers;
 using LeadManagementApi.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
-public class LeadService(Context context) : ILeadService
+public class LeadService(Context context, ICachingService cache) : ILeadService
 {
     private readonly Context _context = context;
+    private readonly ICachingService _cache = cache;
 
-    public async Task<LeadResponseDTO> CreateLeadAsync(CreateLeadDTO request)
+    public async Task<LeadResponseDTO> CreateLead(CreateLeadDTO request)
     {
         try
         {
@@ -39,7 +42,7 @@ public class LeadService(Context context) : ILeadService
         }
     }
 
-    public async Task<List<LeadResponseDTO>> GetAllLeadsAsync()
+    public async Task<List<LeadResponseDTO>> GetAllLeads()
     {
         try
         {
@@ -58,13 +61,14 @@ public class LeadService(Context context) : ILeadService
         }
     }
 
-    public async Task<LeadResponseDTO> UpdateLeadAsync(int id, UpdateLeadDTO request)
+    public async Task<LeadResponseDTO> UpdateLead(int id, UpdateLeadDTO request)
     {
         try
         {
             var leadEntity = await _context.Leads.FindAsync(id) ?? throw new ArgumentException($"Lead with id {id} not found");
             leadEntity = LeadMapper.ToEntityFromUpdateDTO(request, leadEntity);
             await _context.SaveChangesAsync();
+            await _cache.InvalidateAsync("leads", id);
             return LeadMapper.MapToResponseDTO(leadEntity);
         }
         catch (DbUpdateConcurrencyException ex)
@@ -84,13 +88,14 @@ public class LeadService(Context context) : ILeadService
         }
     }
 
-    public async Task DeleteLeadAsync(int id)
+    public async Task DeleteLead(int id)
     {
         try
         {
             var lead = await _context.Leads.FindAsync(id) ?? throw new ArgumentException($"Lead with id {id} not found");
             _context.Leads.Remove(lead);
             await _context.SaveChangesAsync();
+            await _cache.InvalidateAsync("leads", id);
         }
         catch (DbUpdateException ex)
         {
@@ -104,22 +109,25 @@ public class LeadService(Context context) : ILeadService
         }
     }
 
-    public Task<LeadResponseDTO> GetLeadByIdAsync(int id)
+    public async Task<LeadResponseDTO> GetLeadById(int id)
     {
-        try
+        var cacheLead = await _cache.GetAsync("leads", id);
+        
+        if (cacheLead != null)
         {
-            var leadEntity = _context.Leads.Find(id) ?? throw new ArgumentException($"Lead with id {id} not found");
-            return Task.FromResult(LeadMapper.MapToResponseDTO(leadEntity));
+            var cachedLeadEntity = JsonConvert.DeserializeObject<LeadResponseDTO>(cacheLead);
+            Console.WriteLine("Loaded from cache");
+            if (cachedLeadEntity != null) {
+                return cachedLeadEntity;
+            }
         }
-        catch (DbUpdateException ex)
-        {
-            Console.WriteLine($"DbUpdateException: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error while retrieving lead: {ex.Message}");
-            throw;
-        }
+
+        var leadEntityFromDatabase = _context.Leads.Find(id) ?? throw new ArgumentException($"Lead with id {id} not found");
+        var leadEntity = LeadMapper.MapToResponseDTO(leadEntityFromDatabase);
+
+        await _cache.SetAsync("leads", id, JsonConvert.SerializeObject(leadEntity));
+
+        Console.WriteLine("Loaded from database");
+        return leadEntity;
     }
 }

@@ -1,5 +1,4 @@
 using LeadManagementApi.Models.Enums;
-using LeadManagementApi.Utils;
 using Newtonsoft.Json;
 
 namespace LeadManagementApi.Models;
@@ -13,9 +12,9 @@ public class LeadResponseDTO
     public string? PrimaryContactPhone { get; set; }
     public LeadStage LeadStage { get; set; }
 
-    [JsonConverter(typeof(DateTimeConverter))]
+    // [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreatedAt { get; set; }
 
-    [JsonConverter(typeof(DateTimeConverter))]
+    // [JsonConverter(typeof(DateTimeConverter))]
     public DateTime UpdatedAt { get; set; }
 }

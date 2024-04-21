@@ -15,7 +15,7 @@ public class LeadsController(ILeadService leadService) : ControllerBase
     {
         try
         {
-            List<LeadResponseDTO> leads = await _leadService.GetAllLeadsAsync();
+            List<LeadResponseDTO> leads = await _leadService.GetAllLeads();
             return leads;
         }
         catch (Exception ex)
@@ -29,7 +29,7 @@ public class LeadsController(ILeadService leadService) : ControllerBase
     {
         try
         {
-            LeadResponseDTO lead = await _leadService.CreateLeadAsync(request);
+            LeadResponseDTO lead = await _leadService.CreateLead(request);
             return CreatedAtAction(nameof(GetLeadById), new { id = lead.Id }, lead);
         }
         catch (Exception ex)
@@ -43,15 +43,17 @@ public class LeadsController(ILeadService leadService) : ControllerBase
     {
         try
         {
-            LeadResponseDTO lead = await _leadService.GetLeadByIdAsync(id);
+            LeadResponseDTO lead = await _leadService.GetLeadById(id);
             return lead;
         }
         catch (ArgumentException ex)
         {
+            Console.WriteLine(ex);
             return NotFound(new { message = ex.Message });
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex);
             return BadRequest(new { message = ex.Message });
         }
     }
@@ -61,7 +63,7 @@ public class LeadsController(ILeadService leadService) : ControllerBase
     {
         try
         {
-            LeadResponseDTO lead = await _leadService.UpdateLeadAsync(id, request);
+            LeadResponseDTO lead = await _leadService.UpdateLead(id, request);
             return lead;
         }
         catch (ArgumentException ex)
@@ -79,7 +81,7 @@ public class LeadsController(ILeadService leadService) : ControllerBase
     {
         try
         {
-            await _leadService.DeleteLeadAsync(id);
+            await _leadService.DeleteLead(id);
             return NoContent();
         }
         catch (ArgumentException ex)
