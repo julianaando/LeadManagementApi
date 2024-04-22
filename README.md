@@ -38,6 +38,11 @@ docker-compose up --build
 #### Ou através do link Azure https://leadmanagementapi-ploomes.azurewebsites.net/index.html
 Você será direcionado à interface do Swagger, onde poderá explorar e testar os endpoints da API.
 
+#### Para rodar os testes, entre na pasta **LeadManagementApi.Test** e execute o comando 
+```
+dotnet test
+```
+
 ## 📚 Documentação (endpoints)
 
 ### :pencil: Leads
