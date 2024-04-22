@@ -17,8 +17,10 @@ A Lead Management API é um projeto desenvolvido como parte do processo seletivo
 ## :woman_technologist: Conhecimentos aplicados
 
 - **Linguagem de Programação:** C#
-- **Framework:** ASP.NET Core
+- **Framework:** .NET 8
 - **Banco de Dados:** Entity Framework Core com SQL Server
+- **Cache:** Redis
+- **Testes:** xUnit
   
 ## ⚙️ Como Executar
 

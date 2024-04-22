@@ -1,6 +1,4 @@
 using System.Runtime.Serialization;
-using LeadManagementApi.Utils;
-using Newtonsoft.Json;
 
 namespace LeadManagementApi.Models.Enums;
 

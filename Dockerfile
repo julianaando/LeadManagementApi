@@ -1,12 +1,19 @@
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 
 ARG connection_string
+ARG redis_connection_string
 
 WORKDIR /app
 
 ENV ConnectionStrings__DefaultConnection=${connection_string}
 
+<<<<<<< HEAD
 COPY LeadManagementApi/*.csproj ./
+=======
+ENV ConnectionStrings__RedisConnection=${redis_connection_string}
+
+COPY *.csproj ./
+>>>>>>> main
 RUN dotnet restore
 
 COPY LeadManagementApi/ ./

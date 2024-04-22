@@ -3,9 +3,9 @@ using LeadManagementApi.Models;
 
 public interface ILeadService
 {
-    Task<LeadResponseDTO> CreateLeadAsync(CreateLeadDTO request);
-    Task<List<LeadResponseDTO>> GetAllLeadsAsync();
-    Task<LeadResponseDTO> UpdateLeadAsync(int id, UpdateLeadDTO request);
-    Task DeleteLeadAsync(int id);
-    Task<LeadResponseDTO> GetLeadByIdAsync(int id);
+    Task<LeadResponseDTO> CreateLead(CreateLeadDTO request);
+    Task<List<LeadResponseDTO>> GetAllLeads();
+    Task<LeadResponseDTO> UpdateLead(int id, UpdateLeadDTO request);
+    Task DeleteLead(int id);
+    Task<LeadResponseDTO> GetLeadById(int id);
 }
